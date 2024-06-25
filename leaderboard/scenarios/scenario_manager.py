@@ -14,6 +14,7 @@ from __future__ import print_function
 import signal
 import sys
 import time
+import os
 
 import py_trees
 import carla
@@ -150,6 +151,8 @@ class ScenarioManager(object):
 
             try:
                 ego_action = self._agent()
+                if os.environ.get("STEER_UP"):
+                    ego_action.steer *= 2
 
             # Special exception inside the agent that isn't caused by the agent
             except SensorReceivedNoData as e:
