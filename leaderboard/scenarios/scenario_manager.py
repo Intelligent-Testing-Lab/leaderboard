@@ -152,7 +152,8 @@ class ScenarioManager(object):
             try:
                 ego_action = self._agent()
                 if os.environ.get("STEER_UP"):
-                    ego_action.steer *= 2
+                    rate = float(os.environ.get("STEER_UP"))
+                    ego_action.steer *= rate
 
             # Special exception inside the agent that isn't caused by the agent
             except SensorReceivedNoData as e:
