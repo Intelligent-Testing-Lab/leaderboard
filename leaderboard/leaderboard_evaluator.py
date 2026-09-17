@@ -217,6 +217,12 @@ class LeaderboardEvaluator(object):
         self.world.apply_settings(settings)
 
         self.world.reset_all_traffic_lights()
+        print(f"\033[1m> Scaling the traffic lights by {args.traffic_light_scale} \033[0m")
+        for tl in self.world.get_actors().filter('*traffic_light*'):
+            tl.set_green_time(tl.get_green_time() * args.traffic_light_scale)
+            tl.set_red_time(tl.get_red_time() * args.traffic_light_scale)
+            tl.set_yellow_time(tl.get_yellow_time() * args.traffic_light_scale)
+
         CarlaDataProvider.set_client(self.client)
         CarlaDataProvider.set_traffic_manager_port(args.traffic_manager_port)
         CarlaDataProvider.set_world(self.world)
@@ -460,6 +466,8 @@ def main():
                         help="Path to checkpoint used for saving statistics and resuming")
     parser.add_argument("--debug-checkpoint", type=str, default='./live_results.txt',
                         help="Path to checkpoint used for saving live results")
+    parser.add_argument('--traffic-light-scale', type=float, default=1.0,
+                    help='Multiply every traffic-light phase (green/red/yellow) by this factor, e.g. 0.5 halves the cycle')
 
     arguments = parser.parse_args()
 
